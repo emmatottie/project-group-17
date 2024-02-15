@@ -43,6 +43,7 @@ function searchMovieInGenre(genre: string, title: string, genreHashtables: Genre
     return null;
 }
 
+
 // Example usage
 const genreHashtables = initializeGenreHashtables();
 

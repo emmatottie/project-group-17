@@ -8,7 +8,7 @@ function display_menu() {
 
   // Function to handle user input
 function handle_input(option: string) {
-    let input = ""
+    let input = window.prompt("")
     if (input === "1"){
         searchMovie()
     } else if (input === "2") {
