@@ -1,4 +1,4 @@
-//bajskorv
+//bajsko
 
 function display_menu() {
     console.log('Welcome to our Movie Recommendation System');
