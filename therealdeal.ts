@@ -24,7 +24,7 @@ function top_5(movie: movie, top5: Array<movie>): void {
     }
 }
 
-function similar_movies(movie:string): List<movie> {
+function similar_movies(movie:string): Array<movie> | undefined{
     const movie_api: movie = //sök movie i api
     if (movie_api) {
         let similar: Array<movie> = []
@@ -34,7 +34,9 @@ function similar_movies(movie:string): List<movie> {
                 top_5(genre[j], similar)
             }
         }
+        return similar
     } else {
         console.log("Could not find any movie called " + movie)
+        return undefined
     }
 }
