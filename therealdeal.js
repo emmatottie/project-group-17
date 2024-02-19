@@ -62,7 +62,7 @@ function get_id(title) {
 }
 function get_movie(id) {
     return __awaiter(this, void 0, void 0, function () {
-        var details_response, credits_response, details_result, credits_result, title, rating, actors, i, directors, i, movie;
+        var details_response, credits_response, details_result, credits_result, title, rating, actors, i, directors, i, genres, movie;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fetch("https://api.themoviedb.org/3/movie/".concat(id, "?language=en-US"), options)];
@@ -81,18 +81,20 @@ function get_movie(id) {
                     rating = details_result.vote_average;
                     actors = [];
                     for (i = 0; i < 10 && i < credits_result.cast.length; i++) {
-                        actors.push(credits_result.cast[i].id);
+                        actors.push(credits_result.cast[i].name);
                     }
                     directors = [];
                     for (i = 0; i < credits_result.crew.length; i++) {
                         if (credits_result.crew[i].job === "Director") {
-                            directors.push(credits_result.crew[i].id);
+                            directors.push(credits_result.crew[i].name);
                         }
                     }
+                    genres = details_result.genres;
                     movie = {
                         title: title,
                         actors: actors,
                         director: directors,
+                        genres: genres,
                         rating: rating
                     };
                     return [2 /*return*/, movie];

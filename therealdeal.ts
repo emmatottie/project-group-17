@@ -4,6 +4,7 @@ type movie = {
     title: string,
     actors: Array<string>,
     director: Array<string>,
+    genres: Array<{id: number, name: string}>
     rating: number
 }
 
@@ -36,18 +37,20 @@ async function get_movie(id: number): Promise<movie> {
     const rating = details_result.vote_average;
     const actors = []
     for(let i = 0; i < 10 && i < credits_result.cast.length; i++) {
-        actors.push(credits_result.cast[i].id)
+        actors.push(credits_result.cast[i].name)
     }
     const directors = []
     for(let i = 0; i < credits_result.crew.length; i++) {
         if(credits_result.crew[i].job === "Director") {
-            directors.push(credits_result.crew[i].id)
+            directors.push(credits_result.crew[i].name)
         }
     }
+    const genres = details_result.genres;
     const movie = {
         title: title,
         actors: actors,
         director: directors,
+        genres: genres,
         rating: rating
     }
     return movie
