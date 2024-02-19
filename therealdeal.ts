@@ -26,7 +26,7 @@ function top_5(movie: movie, top5: Array<movie>): void {
 
 function similar_movies(movie:string): Array<movie> | undefined{
     const movie_api: movie = //sök movie i api
-    if (movie_api) {
+    if(movie_api) {
         let similar: Array<movie> = []
         for(let i = 0; i < movie_api.genre.length; i++) {
             const genre = //sök movie_api.genre[i] i api

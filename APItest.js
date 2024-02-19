@@ -1,12 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tmdb_typescript_api_1 = require("tmdb-typescript-api");
-var apiKey = 'ef2884864a6752995ee2e15ebf341824';
-var api = new tmdb_typescript_api_1.TmdbApi(apiKey);
-api.search.movies('Pulp Fiction').subscribe(function (movies) {
-    var movie = movies.results[0];
-    console.log("\"Pulp Fiction\" was released in ".concat(movie.release_date));
-});
-api.tvshows.details(4607).subscribe(function (show) {
-    console.log("\"Lost\" had ".concat(show.number_of_seasons, " seasons"));
-});
+var options = {
+    method: 'GET',
+    headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlZjI4ODQ4NjRhNjc1Mjk5NWVlMmUxNWViZjM0MTgyNCIsInN1YiI6IjY1Y2UwY2NlZWZjZWE5MDE3Y2FhYzJkMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zKr06f_GR1RioPGjmxIi6IRd8sRgq3s8D2jMeUNzYtU'
+    }
+};
+fetch('https://api.themoviedb.org/3/movie/120?language=en-US', options)
+    .then(function (response) { return response.json(); })
+    .then(function (response) { return console.log(response); })
+    .catch(function (err) { return console.error(err); });
