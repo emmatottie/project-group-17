@@ -33,19 +33,23 @@ async function get_movie(id: number): Promise<movie> {
     const credits_response = await fetch(`https://api.themoviedb.org/3/movie/${id}/credits?language=en-US`, options);
     const details_result = await details_response.json();
     const credits_result = await credits_response.json();
+
     const title = details_result.original_title;
     const rating = details_result.vote_average;
+    const genres = details_result.genres;
+    
     const actors = []
     for(let i = 0; i < 10 && i < credits_result.cast.length; i++) {
         actors.push(credits_result.cast[i].name)
     }
+
     const directors = []
     for(let i = 0; i < credits_result.crew.length; i++) {
         if(credits_result.crew[i].job === "Director") {
             directors.push(credits_result.crew[i].name)
         }
     }
-    const genres = details_result.genres;
+
     const movie = {
         title: title,
         actors: actors,
