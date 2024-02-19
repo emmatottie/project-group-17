@@ -4,7 +4,7 @@ type optionsAPI = {
         accept: string,
         Authorization: string
     }
-}
+};
 
 const options: optionsAPI = {
     method: 'GET',
@@ -18,4 +18,3 @@ const options: optionsAPI = {
     .then(response => response.json())
     .then(response => console.log(response))
     .catch(err => console.error(err));
-
