@@ -27,7 +27,7 @@ async function get_id(title: string): Promise<number> {
 
 
 
-async function get_movie(id: Promise<number> | number): Promise<movie> {
+async function get_movie(id: number): Promise<movie> {
     const details_response = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=en-US`, options);
     const credits_response = await fetch(`https://api.themoviedb.org/3/movie/${id}/credits?language=en-US`, options);
     const details_result = await details_response.json();
@@ -53,9 +53,16 @@ async function get_movie(id: Promise<number> | number): Promise<movie> {
     return movie
 }
 
-function get_movie_from_title(movie: string): Promise<movie> {
-    return get_movie(get_id(movie))
+async function get_movie_from_title(movie: string): Promise<movie> {
+    try {
+      const id = await get_id(movie);
+      const movieDetails = await get_movie(id);
+      return movieDetails;
+    } catch (error) {
+      throw error;
+    }
 }
+
 
 const prompt = PromptSync();
 const userInput = prompt('Enter a movie title: ');

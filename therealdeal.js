@@ -101,7 +101,26 @@ function get_movie(id) {
     });
 }
 function get_movie_from_title(movie) {
-    return get_movie(get_id(movie));
+    return __awaiter(this, void 0, void 0, function () {
+        var id, movieDetails, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, get_id(movie)];
+                case 1:
+                    id = _a.sent();
+                    return [4 /*yield*/, get_movie(id)];
+                case 2:
+                    movieDetails = _a.sent();
+                    return [2 /*return*/, movieDetails];
+                case 3:
+                    error_1 = _a.sent();
+                    throw error_1;
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
 }
 var prompt = PromptSync();
 var userInput = prompt('Enter a movie title: ');
