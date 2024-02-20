@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.get_movie_from_title = exports.get_movie = exports.get_id = void 0;
 var PromptSync = require("prompt-sync");
 var options = {
     method: 'GET',
@@ -60,9 +61,10 @@ function get_id(title) {
         });
     });
 }
+exports.get_id = get_id;
 function get_movie(id) {
     return __awaiter(this, void 0, void 0, function () {
-        var details_response, credits_response, details_result, credits_result, title, rating, actors, i, directors, i, genres, movie;
+        var details_response, credits_response, details_result, credits_result, title, rating, genres, actors, i, directors, i, movie;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fetch("https://api.themoviedb.org/3/movie/".concat(id, "?language=en-US"), options)];
@@ -79,6 +81,7 @@ function get_movie(id) {
                     credits_result = _a.sent();
                     title = details_result.original_title;
                     rating = details_result.vote_average;
+                    genres = details_result.genres;
                     actors = [];
                     for (i = 0; i < 10 && i < credits_result.cast.length; i++) {
                         actors.push(credits_result.cast[i].name);
@@ -89,7 +92,6 @@ function get_movie(id) {
                             directors.push(credits_result.crew[i].name);
                         }
                     }
-                    genres = details_result.genres;
                     movie = {
                         title: title,
                         actors: actors,
@@ -102,6 +104,7 @@ function get_movie(id) {
         });
     });
 }
+exports.get_movie = get_movie;
 function get_movie_from_title(movie) {
     return __awaiter(this, void 0, void 0, function () {
         var id, movieDetails, error_1;
@@ -124,43 +127,9 @@ function get_movie_from_title(movie) {
         });
     });
 }
+exports.get_movie_from_title = get_movie_from_title;
 var prompt = PromptSync();
 var userInput = prompt('Enter a movie title: ');
 get_movie_from_title(userInput)
     .then(function (result) { return console.log(result); })
     .catch(function (err) { return console.error(err); });
-/*
-function top_5(movie: movie, top5: Array<movie>): void {
-    let i = 0
-    while(movie.rating < top5[i].rating && i < top5.length) {
-        continue
-    }
-    if(i < 5) {
-        const new_movie_index = i
-        let current = top5[i]
-        for(i; i < top5.length - 1; i++) {
-            let temp = top5[i + 1]
-            top5[i + 1] = current
-            current = temp
-        }
-        top5[new_movie_index] = movie
-    }
-}
-
-function similar_movies(movie:string): Array<movie> | undefined{
-    const movie_api: movie = //sök movie i api
-    if(movie_api) {
-        let similar: Array<movie> = []
-        for(let i = 0; i < movie_api.genre.length; i++) {
-            const genre = //sök movie_api.genre[i] i api
-            for(let j = 0; j < genre.length; j++) {
-                top_5(genre[j], similar)
-            }
-        }
-        return similar
-    } else {
-        console.log("Could not find any movie called " + movie)
-        return undefined
-    }
-}
-*/ 

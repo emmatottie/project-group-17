@@ -16,7 +16,7 @@ const options = {
     }
   };
 
-async function get_id(title: string): Promise<number> {
+export async function get_id(title: string): Promise<number> {
     const response = await fetch(
       `https://api.themoviedb.org/3/search/movie?query=${title}&include_adult=false&language=en-US&page=1`,
       options
@@ -28,7 +28,7 @@ async function get_id(title: string): Promise<number> {
 
 
 
-async function get_movie(id: number): Promise<movie> {
+export async function get_movie(id: number): Promise<movie> {
     const details_response = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=en-US`, options);
     const credits_response = await fetch(`https://api.themoviedb.org/3/movie/${id}/credits?language=en-US`, options);
     const details_result = await details_response.json();
@@ -60,7 +60,7 @@ async function get_movie(id: number): Promise<movie> {
     return movie
 }
 
-async function get_movie_from_title(movie: string): Promise<movie> {
+export async function get_movie_from_title(movie: string): Promise<movie> {
     try {
       const id = await get_id(movie);
       const movieDetails = await get_movie(id);
@@ -69,6 +69,18 @@ async function get_movie_from_title(movie: string): Promise<movie> {
       throw error;
     }
 }
+
+async function similar_movies(movie: string): Promise<movie> {
+    const tom_array: Array<movie> = []
+    if (await get_movie(get_id(movie))) {
+        //kolla alla katergorier i recordet i filmen och jämför med alla andra filmer i apin 
+        //gör en ny array? av similar movies och returnera den 
+        tom_array
+        //välj en film du vill se
+        //klar
+    }
+}
+
 
 
 const prompt = PromptSync();
