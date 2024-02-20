@@ -233,32 +233,42 @@ function find_most_popular(movies) {
 }
 function movie_member(movies, movie) {
     return __awaiter(this, void 0, void 0, function () {
-        var input_id, i;
+        var i;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, get_id(userInput)];
-                case 1:
-                    input_id = _a.sent();
-                    for (i = 0; i < movies.length; i++) {
-                        if (movies[i].id === movie.id || input_id === movie.id) {
-                            return [2 /*return*/, true];
-                        }
-                    }
-                    return [2 /*return*/, false];
+            for (i = 0; i < movies.length; i++) {
+                if (movies[i].id === movie.id) {
+                    return [2 /*return*/, true];
+                }
             }
+            return [2 /*return*/, false];
         });
     });
 }
 function most_popular_movies(movies) {
-    var reccomended = [];
-    for (var i = 0; reccomended.length < 10; i++) {
-        var highest_index = find_most_popular(movies);
-        if (!movie_member(reccomended, movies[highest_index])) {
-            reccomended.push(movies[highest_index]);
-        }
-        movies.splice(highest_index, 1);
-    }
-    return reccomended;
+    return __awaiter(this, void 0, void 0, function () {
+        var reccomended, input_id, input, i, highest_index;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    reccomended = [];
+                    return [4 /*yield*/, (get_id(userInput))];
+                case 1:
+                    input_id = _a.sent();
+                    return [4 /*yield*/, get_movie(input_id)];
+                case 2:
+                    input = _a.sent();
+                    for (i = 0; reccomended.length < 6; i++) {
+                        highest_index = find_most_popular(movies);
+                        if (!(movie_member(reccomended, movies[highest_index])
+                            || movie_member(reccomended, input))) {
+                            reccomended.push(movies[highest_index]);
+                        }
+                        movies.splice(highest_index, 1);
+                    }
+                    return [2 /*return*/, reccomended];
+            }
+        });
+    });
 }
 var similar_array = [];
 function main(movie) {

@@ -1,4 +1,3 @@
-import { list } from "../lib/list"
 import * as PromptSync from "prompt-sync"
 
 type movie = {
@@ -125,11 +124,14 @@ function movie_member(movies: Array<movie>, movie: movie): boolean {
     return false
 }
 
-function most_popular_movies(movies: Array<movie>): Array<movie> {
+async function most_popular_movies(movies: Array<movie>): Promise<Array<movie>> {
     const reccomended = []
-    for(let i = 0; reccomended.length < 10; i++) {
+    const input_id = await (get_id(userInput))
+    const input = await get_movie(input_id)
+    for(let i = 0; reccomended.length < 6; i++) {
         const highest_index = find_most_popular(movies)
-        if(!movie_member(reccomended, movies[highest_index])) {
+        if(!(movie_member(reccomended, movies[highest_index])
+             || movie_member(reccomended, input))) {
             reccomended.push(movies[highest_index])
         }
         movies.splice(highest_index, 1)
