@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_movie_from_title = exports.get_movie = exports.get_id = void 0;
+exports.main = exports.get_movie = exports.get_id = void 0;
 var PromptSync = require("prompt-sync");
 var options = {
     method: 'GET',
@@ -64,7 +64,7 @@ function get_id(title) {
 exports.get_id = get_id;
 function get_movie(id) {
     return __awaiter(this, void 0, void 0, function () {
-        var details_response, credits_response, details_result, credits_result, title, rating, genres, actors, i, directors, i, movie;
+        var details_response, credits_response, details_result, credits_result, title, popularity, genres, actors, i, directors, i, movie;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fetch("https://api.themoviedb.org/3/movie/".concat(id, "?language=en-US"), options)];
@@ -80,24 +80,25 @@ function get_movie(id) {
                 case 4:
                     credits_result = _a.sent();
                     title = details_result.original_title;
-                    rating = details_result.vote_average;
+                    popularity = details_result.popularity;
                     genres = details_result.genres;
                     actors = [];
-                    for (i = 0; i < 10 && i < credits_result.cast.length; i++) {
-                        actors.push(credits_result.cast[i].name);
+                    for (i = 0; i < 5 && i < credits_result.cast.length; i++) {
+                        actors.push(credits_result.cast[i].id);
                     }
                     directors = [];
                     for (i = 0; i < credits_result.crew.length; i++) {
                         if (credits_result.crew[i].job === "Director") {
-                            directors.push(credits_result.crew[i].name);
+                            directors.push(credits_result.crew[i].id);
                         }
                     }
                     movie = {
+                        id: id,
                         title: title,
                         actors: actors,
                         director: directors,
                         genres: genres,
-                        rating: rating
+                        popularity: popularity
                     };
                     return [2 /*return*/, movie];
             }
@@ -105,31 +106,192 @@ function get_movie(id) {
     });
 }
 exports.get_movie = get_movie;
-function get_movie_from_title(movie) {
+function similar_genre(movie_id) {
     return __awaiter(this, void 0, void 0, function () {
-        var id, movieDetails, error_1;
+        var similar_response, similar_result, i, movie;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, get_id(movie)];
+                case 0: return [4 /*yield*/, fetch("https://api.themoviedb.org/3/movie/".concat(movie_id, "/similar?language=en-US&page=1"), options)];
                 case 1:
-                    id = _a.sent();
-                    return [4 /*yield*/, get_movie(id)];
+                    similar_response = _a.sent();
+                    return [4 /*yield*/, similar_response.json()];
                 case 2:
-                    movieDetails = _a.sent();
-                    return [2 /*return*/, movieDetails];
+                    similar_result = _a.sent();
+                    i = 0;
+                    _a.label = 3;
                 case 3:
-                    error_1 = _a.sent();
-                    throw error_1;
-                case 4: return [2 /*return*/];
+                    if (!(i < similar_result.results.length)) return [3 /*break*/, 6];
+                    return [4 /*yield*/, get_movie(similar_result.results[i].id)];
+                case 4:
+                    movie = _a.sent();
+                    similar_array.push(movie);
+                    _a.label = 5;
+                case 5:
+                    i++;
+                    return [3 /*break*/, 3];
+                case 6: return [2 /*return*/];
             }
         });
     });
 }
-exports.get_movie_from_title = get_movie_from_title;
+function similar_actor(movie_id) {
+    return __awaiter(this, void 0, void 0, function () {
+        var actors, i, actor_id, similar_response, similar_result, j, movie_id_1, movie;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, get_movie(movie_id)];
+                case 1:
+                    actors = (_a.sent()).actors;
+                    i = 0;
+                    _a.label = 2;
+                case 2:
+                    if (!(i < actors.length)) return [3 /*break*/, 9];
+                    actor_id = actors[i];
+                    return [4 /*yield*/, fetch("https://api.themoviedb.org/3/person/".concat(actor_id, "/movie_credits?language=en-US"), options)];
+                case 3:
+                    similar_response = _a.sent();
+                    return [4 /*yield*/, similar_response.json()];
+                case 4:
+                    similar_result = _a.sent();
+                    j = 0;
+                    _a.label = 5;
+                case 5:
+                    if (!(j < similar_result.cast.length && j < 10)) return [3 /*break*/, 8];
+                    movie_id_1 = similar_result.cast[j].id;
+                    return [4 /*yield*/, get_movie(movie_id_1)];
+                case 6:
+                    movie = _a.sent();
+                    similar_array.push(movie);
+                    _a.label = 7;
+                case 7:
+                    j++;
+                    return [3 /*break*/, 5];
+                case 8:
+                    i++;
+                    return [3 /*break*/, 2];
+                case 9: return [2 /*return*/];
+            }
+        });
+    });
+}
+function similar_director(movie_id) {
+    return __awaiter(this, void 0, void 0, function () {
+        var director, directed_movies, i, director_id, similar_response, similar_result, j, movie_id_2, movie, m;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, get_movie(movie_id)];
+                case 1:
+                    director = (_a.sent()).director;
+                    directed_movies = [];
+                    i = 0;
+                    _a.label = 2;
+                case 2:
+                    if (!(i < director.length)) return [3 /*break*/, 9];
+                    director_id = director[i];
+                    return [4 /*yield*/, fetch("https://api.themoviedb.org/3/person/".concat(director_id, "/movie_credits?language=en-US"), options)];
+                case 3:
+                    similar_response = _a.sent();
+                    return [4 /*yield*/, similar_response.json()];
+                case 4:
+                    similar_result = _a.sent();
+                    j = 0;
+                    _a.label = 5;
+                case 5:
+                    if (!(j < similar_result.crew.length)) return [3 /*break*/, 8];
+                    if (!(similar_result.crew[j].job === "Director")) return [3 /*break*/, 7];
+                    movie_id_2 = similar_result.crew[j].id;
+                    return [4 /*yield*/, get_movie(movie_id_2)];
+                case 6:
+                    movie = _a.sent();
+                    directed_movies.push(movie);
+                    _a.label = 7;
+                case 7:
+                    j++;
+                    return [3 /*break*/, 5];
+                case 8:
+                    i++;
+                    return [3 /*break*/, 2];
+                case 9:
+                    for (m = 0; m < directed_movies.length; m++) {
+                        similar_array.push(directed_movies[m]);
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function find_most_popular(movies) {
+    var low = 0;
+    var high = movies.length - 1;
+    var highest_rating = low;
+    for (var i = low + 1; i <= high; i++) {
+        if (movies[i].popularity > movies[highest_rating].popularity) {
+            highest_rating = i;
+        }
+    }
+    return highest_rating;
+}
+function movie_member(movies, movie) {
+    return __awaiter(this, void 0, void 0, function () {
+        var input_id, i;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, get_id(userInput)];
+                case 1:
+                    input_id = _a.sent();
+                    for (i = 0; i < movies.length; i++) {
+                        if (movies[i].id === movie.id || input_id === movie.id) {
+                            return [2 /*return*/, true];
+                        }
+                    }
+                    return [2 /*return*/, false];
+            }
+        });
+    });
+}
+function most_popular_movies(movies) {
+    var reccomended = [];
+    for (var i = 0; reccomended.length < 10; i++) {
+        var highest_index = find_most_popular(movies);
+        if (!movie_member(reccomended, movies[highest_index])) {
+            reccomended.push(movies[highest_index]);
+        }
+        movies.splice(highest_index, 1);
+    }
+    return reccomended;
+}
+var similar_array = [];
+function main(movie) {
+    return __awaiter(this, void 0, void 0, function () {
+        var id, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 5, , 6]);
+                    return [4 /*yield*/, get_id(movie)];
+                case 1:
+                    id = _a.sent();
+                    return [4 /*yield*/, similar_director(id)];
+                case 2:
+                    _a.sent();
+                    return [4 /*yield*/, similar_actor(id)];
+                case 3:
+                    _a.sent();
+                    return [4 /*yield*/, similar_genre(id)];
+                case 4:
+                    _a.sent();
+                    return [2 /*return*/, most_popular_movies(similar_array)];
+                case 5:
+                    error_1 = _a.sent();
+                    throw error_1;
+                case 6: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.main = main;
 var prompt = PromptSync();
 var userInput = prompt('Enter a movie title: ');
-get_movie_from_title(userInput)
+main(userInput)
     .then(function (result) { return console.log(result); })
     .catch(function (err) { return console.error(err); });
