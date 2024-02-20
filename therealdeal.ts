@@ -124,14 +124,11 @@ function movie_member(movies: Array<movie>, movie: movie): boolean {
     return false
 }
 
-async function most_popular_movies(movies: Array<movie>): Promise<Array<movie>> {
+function most_popular_movies(movies: Array<movie>): Array<movie> {
     const reccomended = []
-    const input_id = await (get_id(userInput))
-    const input = await get_movie(input_id)
     for(let i = 0; reccomended.length < 6; i++) {
         const highest_index = find_most_popular(movies)
-        if(!(movie_member(reccomended, movies[highest_index])
-             || movie_member(reccomended, input))) {
+        if(!movie_member(reccomended, movies[highest_index])) {
             reccomended.push(movies[highest_index])
         }
         movies.splice(highest_index, 1)
@@ -139,7 +136,12 @@ async function most_popular_movies(movies: Array<movie>): Promise<Array<movie>> 
     return reccomended
 }
 
-const similar_array: Array<movie> = []
+async function remove_input(movies: Array<movie>): Promise<Array<movie>>{
+    const id = await get_id(userInput)
+    return movies.filter((x: movie) => x.id != id)
+}
+
+let similar_array: Array<movie> = []
 
 export async function main(movie: string): Promise<Array<movie>> {
     try {
@@ -147,6 +149,7 @@ export async function main(movie: string): Promise<Array<movie>> {
       await similar_director(id);
       await similar_actor(id);
       await similar_genre(id);
+      similar_array = await remove_input(similar_array)
       return most_popular_movies(similar_array);
     } catch (error) {
       throw error;

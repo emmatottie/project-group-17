@@ -232,40 +232,33 @@ function find_most_popular(movies) {
     return highest_rating;
 }
 function movie_member(movies, movie) {
-    return __awaiter(this, void 0, void 0, function () {
-        var i;
-        return __generator(this, function (_a) {
-            for (i = 0; i < movies.length; i++) {
-                if (movies[i].id === movie.id) {
-                    return [2 /*return*/, true];
-                }
-            }
-            return [2 /*return*/, false];
-        });
-    });
+    for (var i = 0; i < movies.length; i++) {
+        if (movies[i].id === movie.id) {
+            return true;
+        }
+    }
+    return false;
 }
 function most_popular_movies(movies) {
+    var reccomended = [];
+    for (var i = 0; reccomended.length < 6; i++) {
+        var highest_index = find_most_popular(movies);
+        if (!movie_member(reccomended, movies[highest_index])) {
+            reccomended.push(movies[highest_index]);
+        }
+        movies.splice(highest_index, 1);
+    }
+    return reccomended;
+}
+function remove_input(movies) {
     return __awaiter(this, void 0, void 0, function () {
-        var reccomended, input_id, input, i, highest_index;
+        var id;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    reccomended = [];
-                    return [4 /*yield*/, (get_id(userInput))];
+                case 0: return [4 /*yield*/, get_id(userInput)];
                 case 1:
-                    input_id = _a.sent();
-                    return [4 /*yield*/, get_movie(input_id)];
-                case 2:
-                    input = _a.sent();
-                    for (i = 0; reccomended.length < 6; i++) {
-                        highest_index = find_most_popular(movies);
-                        if (!(movie_member(reccomended, movies[highest_index])
-                            || movie_member(reccomended, input))) {
-                            reccomended.push(movies[highest_index]);
-                        }
-                        movies.splice(highest_index, 1);
-                    }
-                    return [2 /*return*/, reccomended];
+                    id = _a.sent();
+                    return [2 /*return*/, movies.filter(function (x) { return x.id != id; })];
             }
         });
     });
@@ -277,7 +270,7 @@ function main(movie) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 5, , 6]);
+                    _a.trys.push([0, 6, , 7]);
                     return [4 /*yield*/, get_id(movie)];
                 case 1:
                     id = _a.sent();
@@ -290,11 +283,14 @@ function main(movie) {
                     return [4 /*yield*/, similar_genre(id)];
                 case 4:
                     _a.sent();
-                    return [2 /*return*/, most_popular_movies(similar_array)];
+                    return [4 /*yield*/, remove_input(similar_array)];
                 case 5:
+                    similar_array = _a.sent();
+                    return [2 /*return*/, most_popular_movies(similar_array)];
+                case 6:
                     error_1 = _a.sent();
                     throw error_1;
-                case 6: return [2 /*return*/];
+                case 7: return [2 /*return*/];
             }
         });
     });
