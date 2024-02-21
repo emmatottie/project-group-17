@@ -64,7 +64,7 @@ function get_id(title) {
 exports.get_id = get_id;
 function get_movie(id) {
     return __awaiter(this, void 0, void 0, function () {
-        var details_response, credits_response, details_result, credits_result, title, popularity, genres, actors, i, directors, i, movie;
+        var details_response, credits_response, details_result, credits_result, title, popularity, genres, cover, actors, i, directors, i, movie;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fetch("https://api.themoviedb.org/3/movie/".concat(id, "?language=en-US"), options)];
@@ -82,6 +82,7 @@ function get_movie(id) {
                     title = details_result.original_title;
                     popularity = details_result.popularity;
                     genres = details_result.genres;
+                    cover = details_result.poster_path;
                     actors = [];
                     for (i = 0; i < 3 && i < credits_result.cast.length; i++) {
                         actors.push(credits_result.cast[i].id);
@@ -98,7 +99,8 @@ function get_movie(id) {
                         actors: actors,
                         director: directors,
                         genres: genres,
-                        popularity: popularity
+                        popularity: popularity,
+                        cover: cover
                     };
                     return [2 /*return*/, movie];
             }
@@ -301,3 +303,12 @@ var userInput = prompt('Enter a movie title: ');
 main(userInput)
     .then(function (result) { return console.log(result); })
     .catch(function (err) { return console.error(err); });
+/**
+ TO DO:
+ * to function specifications on every function
+ * running time
+ * webiste
+ * polish the code
+ * decide how many movies you want to get as output
+ * comment the code
+*/

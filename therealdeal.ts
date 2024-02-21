@@ -5,8 +5,8 @@ type movie = {
     title: string,
     actors: Array<number>,
     director: Array<number>,
-    genres: Array<{id: number, name: string}>
-    popularity: number
+    popularity: number,
+    cover: string
 }
 
 const options = {
@@ -36,6 +36,7 @@ export async function get_movie(id: number): Promise<movie> {
     const title = details_result.original_title;
     const popularity = details_result.popularity;
     const genres = details_result.genres;
+    const cover = details_result.poster_path
 
     const actors = []
     for(let i = 0; i < 3 && i < credits_result.cast.length; i++) {
@@ -54,8 +55,8 @@ export async function get_movie(id: number): Promise<movie> {
         title: title,
         actors: actors,
         director: directors,
-        genres: genres,
-        popularity: popularity
+        popularity: popularity,
+        cover: cover
     }
     return movie
 }
