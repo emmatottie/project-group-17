@@ -61,7 +61,7 @@ export async function get_movie(id: number): Promise<movie> {
     return movie
 }
 
-async function similar_genre(movie_id: number) {
+export async function similar_genre(movie_id: number) {
     const similar_response = await fetch(`https://api.themoviedb.org/3/movie/${movie_id}/similar?language=en-US&page=1`, options)
     const similar_result = await similar_response.json();
     for(let i = 0; i < similar_result.results.length; i++) {
