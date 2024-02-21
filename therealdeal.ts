@@ -38,7 +38,7 @@ export async function get_movie(id: number): Promise<movie> {
     const genres = details_result.genres;
 
     const actors = []
-    for(let i = 0; i < 5 && i < credits_result.cast.length; i++) {
+    for(let i = 0; i < 3 && i < credits_result.cast.length; i++) {
         actors.push(credits_result.cast[i].id)
     }
 
@@ -75,7 +75,7 @@ async function similar_actor(movie_id: number) {
         const actor_id = actors[i]
         const similar_response = await fetch(`https://api.themoviedb.org/3/person/${actor_id}/movie_credits?language=en-US`, options)
         const similar_result = await similar_response.json()
-        for(let j = 0; j < similar_result.cast.length && j < 10; j++) {
+        for(let j = 0; j < similar_result.cast.length && j < 20; j++) {
             const movie_id = similar_result.cast[j].id
             const movie = await get_movie(movie_id)
             similar_array.push(movie)
@@ -126,7 +126,7 @@ function movie_member(movies: Array<movie>, movie: movie): boolean {
 
 function most_popular_movies(movies: Array<movie>): Array<movie> {
     const reccomended = []
-    for(let i = 0; reccomended.length < 6; i++) {
+    for(let i = 0; reccomended.length < 5; i++) {
         const highest_index = find_most_popular(movies)
         if(!movie_member(reccomended, movies[highest_index])) {
             reccomended.push(movies[highest_index])

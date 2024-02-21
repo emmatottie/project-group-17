@@ -83,7 +83,7 @@ function get_movie(id) {
                     popularity = details_result.popularity;
                     genres = details_result.genres;
                     actors = [];
-                    for (i = 0; i < 5 && i < credits_result.cast.length; i++) {
+                    for (i = 0; i < 3 && i < credits_result.cast.length; i++) {
                         actors.push(credits_result.cast[i].id);
                     }
                     directors = [];
@@ -156,7 +156,7 @@ function similar_actor(movie_id) {
                     j = 0;
                     _a.label = 5;
                 case 5:
-                    if (!(j < similar_result.cast.length && j < 10)) return [3 /*break*/, 8];
+                    if (!(j < similar_result.cast.length && j < 20)) return [3 /*break*/, 8];
                     movie_id_1 = similar_result.cast[j].id;
                     return [4 /*yield*/, get_movie(movie_id_1)];
                 case 6:
@@ -241,7 +241,7 @@ function movie_member(movies, movie) {
 }
 function most_popular_movies(movies) {
     var reccomended = [];
-    for (var i = 0; reccomended.length < 6; i++) {
+    for (var i = 0; reccomended.length < 5; i++) {
         var highest_index = find_most_popular(movies);
         if (!movie_member(reccomended, movies[highest_index])) {
             reccomended.push(movies[highest_index]);
