@@ -162,3 +162,13 @@ const userInput = prompt('Enter a movie title: ');
 main(userInput)
   .then((result) => console.log(result))
   .catch((err) => console.error(err));
+
+/** 
+ TO DO:
+ * to function specifications on every function
+ * running time
+ * webiste
+ * polish the code
+ * decide how many movies you want to get as output
+ * comment the code
+*/
