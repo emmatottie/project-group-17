@@ -36,8 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.main = exports.get_movie = exports.get_id = void 0;
-var PromptSync = require("prompt-sync");
+exports.main = exports.movie_member = exports.similar_genre = exports.get_movie = exports.get_id = void 0;
 var options = {
     method: 'GET',
     headers: {
@@ -98,7 +97,6 @@ function get_movie(id) {
                         title: title,
                         actors: actors,
                         director: directors,
-                        genres: genres,
                         popularity: popularity,
                         cover: cover
                     };
@@ -136,6 +134,7 @@ function similar_genre(movie_id) {
         });
     });
 }
+exports.similar_genre = similar_genre;
 function similar_actor(movie_id) {
     return __awaiter(this, void 0, void 0, function () {
         var actors, i, actor_id, similar_response, similar_result, j, movie_id_1, movie;
@@ -241,6 +240,7 @@ function movie_member(movies, movie) {
     }
     return false;
 }
+exports.movie_member = movie_member;
 function most_popular_movies(movies) {
     var reccomended = [];
     for (var i = 0; reccomended.length < 5; i++) {
@@ -252,12 +252,12 @@ function most_popular_movies(movies) {
     }
     return reccomended;
 }
-function remove_input(movies) {
+function remove_input(movies, movie) {
     return __awaiter(this, void 0, void 0, function () {
         var id;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, get_id(userInput)];
+                case 0: return [4 /*yield*/, get_id(movie)];
                 case 1:
                     id = _a.sent();
                     return [2 /*return*/, movies.filter(function (x) { return x.id != id; })];
@@ -285,24 +285,19 @@ function main(movie) {
                     return [4 /*yield*/, similar_genre(id)];
                 case 4:
                     _a.sent();
-                    return [4 /*yield*/, remove_input(similar_array)];
+                    return [4 /*yield*/, remove_input(similar_array, movie)];
                 case 5:
                     similar_array = _a.sent();
                     return [2 /*return*/, most_popular_movies(similar_array)];
                 case 6:
                     error_1 = _a.sent();
-                    throw error_1;
+                    return [2 /*return*/, "Could not find ".concat(movie)];
                 case 7: return [2 /*return*/];
             }
         });
     });
 }
 exports.main = main;
-var prompt = PromptSync();
-var userInput = prompt('Enter a movie title: ');
-main(userInput)
-    .then(function (result) { return console.log(result); })
-    .catch(function (err) { return console.error(err); });
 /**
  TO DO:
  * to function specifications on every function

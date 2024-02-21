@@ -1,4 +1,3 @@
-import * as PromptSync from "prompt-sync"
 
 type movie = {
     id: number,
@@ -116,7 +115,7 @@ function find_most_popular(movies: Array<movie>): number {
     return highest_rating
 }
 
-function movie_member(movies: Array<movie>, movie: movie): boolean {
+export function movie_member(movies: Array<movie>, movie: movie): boolean {
     for(let i = 0; i < movies.length; i++) {
         if(movies[i].id === movie.id) {
             return true
@@ -137,32 +136,25 @@ function most_popular_movies(movies: Array<movie>): Array<movie> {
     return reccomended
 }
 
-async function remove_input(movies: Array<movie>): Promise<Array<movie>>{
-    const id = await get_id(userInput)
+async function remove_input(movies: Array<movie>, movie: string): Promise<Array<movie>>{
+    const id = await get_id(movie)
     return movies.filter((x: movie) => x.id != id)
 }
 
 let similar_array: Array<movie> = []
 
-export async function main(movie: string): Promise<Array<movie>> {
+export async function main(movie: string): Promise<Array<movie> | string> {
     try {
       const id = await get_id(movie);
       await similar_director(id);
       await similar_actor(id);
       await similar_genre(id);
-      similar_array = await remove_input(similar_array)
+      similar_array = await remove_input(similar_array, movie)
       return most_popular_movies(similar_array);
     } catch (error) {
-      throw error;
+      return `Could not find ${movie}`
     }
 }
-
-const prompt = PromptSync();
-const userInput = prompt('Enter a movie title: ');
-
-main(userInput)
-  .then((result) => console.log(result))
-  .catch((err) => console.error(err));
 
 /** 
  TO DO:
