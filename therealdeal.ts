@@ -11,7 +11,8 @@ type movies_reccomend = {
     id: number,
     title: string,
     popularity: number,
-    cover: string
+    cover: string,
+    rating: number
 }
 
 const options = {
@@ -74,11 +75,13 @@ export async function similar_genre(movie_id: number) {
         const movie_title = similar_result.results[i].original_title
         const movie_popularity = similar_result.results[i].popularity
         const movie_cover = similar_result.results[i].poster_path
+        const movie_rating = similar_result.results[i].vote_average
         const movie: movies_reccomend = {
             id: movie_id,
             title: movie_title,
             popularity: movie_popularity,
-            cover: movie_cover
+            cover: movie_cover,
+            rating: movie_rating
         }
         similar_array.push(movie)
     }
@@ -95,11 +98,13 @@ async function similar_actor(movie_id: number) {
             const movie_title = similar_result.cast[j].original_title
             const movie_popularity = similar_result.cast[j].popularity
             const movie_cover = similar_result.cast[j].poster_path
+            const movie_rating = similar_result.cast[j].vote_average
             const movie: movies_reccomend = {
                 id: movie_id,
                 title: movie_title,
                 popularity: movie_popularity,
-                cover: movie_cover
+                cover: movie_cover,
+                rating: movie_rating
             }
             similar_array.push(movie)
         }
@@ -118,11 +123,13 @@ async function similar_director(movie_id: number) {
                 const movie_title = similar_result.crew[j].original_title
                 const movie_popularity = similar_result.crew[j].popularity
                 const movie_cover = similar_result.crew[j].poster_path
+                const movie_rating = similar_result.crew[j].vote_average
                 const movie: movies_reccomend = {
                     id: movie_id,
                     title: movie_title,
                     popularity: movie_popularity,
-                    cover: movie_cover
+                    cover: movie_cover,
+                    rating: movie_rating
                 }
                 similar_array.push(movie)
             }
@@ -135,7 +142,7 @@ function find_most_popular(movies: Array<movies_reccomend>): number {
     const high = movies.length - 1
     let highest_rating = low
     for(let i = low + 1; i <= high; i++) {
-        if(movies[i].popularity > movies[highest_rating].popularity) {
+        if((movies[i].popularity * movies[i].rating) > (movies[highest_rating].popularity * movies[highest_rating].rating)) {
             highest_rating = i
         }
     }
