@@ -1,9 +1,15 @@
-
 type movie = {
     id: number,
     title: string,
     actors: Array<number>,
     director: Array<number>,
+    popularity: number,
+    cover: string
+}
+
+type movies_reccomend = {
+    id: number,
+    title: string,
     popularity: number,
     cover: string
 }
@@ -34,11 +40,10 @@ export async function get_movie(id: number): Promise<movie> {
 
     const title = details_result.original_title;
     const popularity = details_result.popularity;
-    const genres = details_result.genres;
     const cover = details_result.poster_path
 
     const actors = []
-    for(let i = 0; i < 3 && i < credits_result.cast.length; i++) {
+    for(let i = 0; i < 5 && i < credits_result.cast.length; i++) {
         actors.push(credits_result.cast[i].id)
     }
 
@@ -60,11 +65,21 @@ export async function get_movie(id: number): Promise<movie> {
     return movie
 }
 
+
 export async function similar_genre(movie_id: number) {
     const similar_response = await fetch(`https://api.themoviedb.org/3/movie/${movie_id}/similar?language=en-US&page=1`, options)
     const similar_result = await similar_response.json();
     for(let i = 0; i < similar_result.results.length; i++) {
-        const movie = await get_movie(similar_result.results[i].id)
+        const movie_id = similar_result.results[i].id
+        const movie_title = similar_result.results[i].original_title
+        const movie_popularity = similar_result.results[i].popularity
+        const movie_cover = similar_result.results[i].poster_path
+        const movie: movies_reccomend = {
+            id: movie_id,
+            title: movie_title,
+            popularity: movie_popularity,
+            cover: movie_cover
+        }
         similar_array.push(movie)
     }
 }
@@ -75,9 +90,17 @@ async function similar_actor(movie_id: number) {
         const actor_id = actors[i]
         const similar_response = await fetch(`https://api.themoviedb.org/3/person/${actor_id}/movie_credits?language=en-US`, options)
         const similar_result = await similar_response.json()
-        for(let j = 0; j < similar_result.cast.length && j < 20; j++) {
+        for(let j = 0; j < similar_result.cast.length; j++) {
             const movie_id = similar_result.cast[j].id
-            const movie = await get_movie(movie_id)
+            const movie_title = similar_result.cast[j].original_title
+            const movie_popularity = similar_result.cast[j].popularity
+            const movie_cover = similar_result.cast[j].poster_path
+            const movie: movies_reccomend = {
+                id: movie_id,
+                title: movie_title,
+                popularity: movie_popularity,
+                cover: movie_cover
+            }
             similar_array.push(movie)
         }
     }
@@ -85,7 +108,6 @@ async function similar_actor(movie_id: number) {
 
 async function similar_director(movie_id: number) {
     const director = (await get_movie(movie_id)).director
-    const directed_movies = []
     for(let i = 0; i < director.length; i++) {
         const director_id = director[i]
         const similar_response = await fetch(`https://api.themoviedb.org/3/person/${director_id}/movie_credits?language=en-US`, options)
@@ -93,17 +115,22 @@ async function similar_director(movie_id: number) {
         for(let j = 0; j < similar_result.crew.length; j++) {
             if(similar_result.crew[j].job === "Director") {
                 const movie_id = similar_result.crew[j].id
-                const movie = await get_movie(movie_id)
-                directed_movies.push(movie)
+                const movie_title = similar_result.crew[j].original_title
+                const movie_popularity = similar_result.crew[j].popularity
+                const movie_cover = similar_result.crew[j].poster_path
+                const movie: movies_reccomend = {
+                    id: movie_id,
+                    title: movie_title,
+                    popularity: movie_popularity,
+                    cover: movie_cover
+                }
+                similar_array.push(movie)
             }
         }
     }
-    for(let m = 0; m < directed_movies.length; m++) {
-        similar_array.push(directed_movies[m])
-    }
 }
 
-function find_most_popular(movies: Array<movie>): number {
+function find_most_popular(movies: Array<movies_reccomend>): number {
     const low = 0
     const high = movies.length - 1
     let highest_rating = low
@@ -115,7 +142,7 @@ function find_most_popular(movies: Array<movie>): number {
     return highest_rating
 }
 
-export function movie_member(movies: Array<movie>, movie: movie): boolean {
+export function movie_member(movies: Array<movies_reccomend>, movie: movie | movies_reccomend): boolean {
     for(let i = 0; i < movies.length; i++) {
         if(movies[i].id === movie.id) {
             return true
@@ -124,7 +151,7 @@ export function movie_member(movies: Array<movie>, movie: movie): boolean {
     return false
 }
 
-function most_popular_movies(movies: Array<movie>): Array<movie> {
+function most_popular_movies(movies: Array<movies_reccomend>): Array<movies_reccomend> {
     const reccomended = []
     for(let i = 0; reccomended.length < 5; i++) {
         const highest_index = find_most_popular(movies)
@@ -136,14 +163,14 @@ function most_popular_movies(movies: Array<movie>): Array<movie> {
     return reccomended
 }
 
-async function remove_input(movies: Array<movie>, movie: string): Promise<Array<movie>>{
+async function remove_input(movies: Array<movies_reccomend>, movie: string): Promise<Array<movies_reccomend>>{
     const id = await get_id(movie)
-    return movies.filter((x: movie) => x.id != id)
+    return movies.filter((x: movies_reccomend) => x.id != id)
 }
 
-let similar_array: Array<movie> = []
+let similar_array: Array<movies_reccomend> = []
 
-export async function main(movie: string): Promise<Array<movie> | string> {
+export async function main(movie: string): Promise<Array<movies_reccomend> | string> {
     try {
       const id = await get_id(movie);
       await similar_director(id);
@@ -156,7 +183,11 @@ export async function main(movie: string): Promise<Array<movie> | string> {
     }
 }
 
-/** 
+/* similar_genre(120)
+  .then((result) => console.log(result))
+  .catch((err) => console.error(err));
+*/
+/**
  TO DO:
  * to function specifications on every function
  * running time
