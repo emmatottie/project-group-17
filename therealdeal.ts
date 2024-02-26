@@ -7,7 +7,7 @@ type movie = {
     cover: string
 }
 
-type movies_reccomend = {
+type movies_recommend = {
     id: number,
     title: string,
     popularity: number,
@@ -76,7 +76,7 @@ export async function similar_genre(movie_id: number) {
         const movie_popularity = similar_result.results[i].popularity
         const movie_cover = similar_result.results[i].poster_path
         const movie_rating = similar_result.results[i].vote_average
-        const movie: movies_reccomend = {
+        const movie: movies_recommend = {
             id: movie_id,
             title: movie_title,
             popularity: movie_popularity,
@@ -99,7 +99,7 @@ async function similar_actor(movie_id: number) {
             const movie_popularity = similar_result.cast[j].popularity
             const movie_cover = similar_result.cast[j].poster_path
             const movie_rating = similar_result.cast[j].vote_average
-            const movie: movies_reccomend = {
+            const movie: movies_recommend = {
                 id: movie_id,
                 title: movie_title,
                 popularity: movie_popularity,
@@ -124,7 +124,7 @@ async function similar_director(movie_id: number) {
                 const movie_popularity = similar_result.crew[j].popularity
                 const movie_cover = similar_result.crew[j].poster_path
                 const movie_rating = similar_result.crew[j].vote_average
-                const movie: movies_reccomend = {
+                const movie: movies_recommend = {
                     id: movie_id,
                     title: movie_title,
                     popularity: movie_popularity,
@@ -137,7 +137,7 @@ async function similar_director(movie_id: number) {
     }
 }
 
-function find_most_popular(movies: Array<movies_reccomend>): number {
+function find_most_popular(movies: Array<movies_recommend>): number {
     const low = 0
     const high = movies.length - 1
     let highest_rating = low
@@ -149,7 +149,7 @@ function find_most_popular(movies: Array<movies_reccomend>): number {
     return highest_rating
 }
 
-export function movie_member(movies: Array<movies_reccomend>, movie: movie | movies_reccomend): boolean {
+export function movie_member(movies: Array<movies_recommend>, movie: movie | movies_recommend): boolean {
     for(let i = 0; i < movies.length; i++) {
         if(movies[i].id === movie.id) {
             return true
@@ -158,26 +158,26 @@ export function movie_member(movies: Array<movies_reccomend>, movie: movie | mov
     return false
 }
 
-function most_popular_movies(movies: Array<movies_reccomend>): Array<movies_reccomend> {
-    const reccomended = []
-    for(let i = 0; reccomended.length < 5; i++) {
+function most_popular_movies(movies: Array<movies_recommend>): Array<movies_recommend> {
+    const recommended = []
+    for(let i = 0; recommended.length < 5; i++) {
         const highest_index = find_most_popular(movies)
-        if(!movie_member(reccomended, movies[highest_index])) {
-            reccomended.push(movies[highest_index])
+        if(!movie_member(recommended, movies[highest_index])) {
+            recommended.push(movies[highest_index])
         }
         movies.splice(highest_index, 1)
     }
-    return reccomended
+    return recommended
 }
 
-async function remove_input(movies: Array<movies_reccomend>, movie: string): Promise<Array<movies_reccomend>>{
+async function remove_input(movies: Array<movies_recommend>, movie: string): Promise<Array<movies_recommend>>{
     const id = await get_id(movie)
-    return movies.filter((x: movies_reccomend) => x.id != id)
+    return movies.filter((x: movies_recommend) => x.id != id)
 }
 
-let similar_array: Array<movies_reccomend> = []
+let similar_array: Array<movies_recommend> = []
 
-export async function main(movie: string): Promise<Array<movies_reccomend> | string> {
+export async function main(movie: string): Promise<Array<movies_recommend> | string> {
     try {
       const id = await get_id(movie);
       await similar_director(id);
