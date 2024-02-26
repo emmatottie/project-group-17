@@ -1,4 +1,4 @@
-import {get_id, get_movie, main, movie_member, similar_genre} from "./therealdeal"
+import { get_movie_for_test, main, movie_member} from "./therealdeal"
 
 test("test 1 - checks if the main function returns 5 movies", async () => {
     const movie_title = "The Shawshank Redemption";
@@ -11,7 +11,7 @@ test("test 2 - test when a movie doesn't exist", async () => {
 })
 
 test("test 3 - test if a movie is member in an array of movies", async () => {
-    const movie = await get_movie(120)
+    const movie = await get_movie_for_test(120)
     const movies = [movie]
     expect(movie_member(movies, movie)).toBe(true)
 })
