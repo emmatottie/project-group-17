@@ -25,16 +25,15 @@
             .catch((err) => alert(err));
         </script>
         
-        
-        
-        <!--script>
-            userInput = getElementById("Input").value;
-            if (userInput != null) {
-                const result = main(userInput)
-                document.getElementById("show").innerHTML =
-                "Recomended movies: " + result;
-            };
-        </script-->
+        Skriv ditt namn: <input type="text", id="fun", name="fun">
+        <button onclick="fun()">Klicka!</button>
+        <p id="output"></p>
+        <script>
+            function fun(){
+                const namn = document.getElementById('fun').value
+                document.getElementById('output').innerHTML = "Hej " + namn
+  }
+        </script>
 
     </body>
 
