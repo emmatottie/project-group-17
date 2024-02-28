@@ -1,0 +1,45 @@
+<!Doctype html>
+
+<html lang="en">
+	<head>
+    <meta charset="utf-8">
+    <title>Movie Recommender</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel = "stylesheet" href = "css.css">
+    <script src="code.js"></script>
+	<title>Hem</title>
+    
+	<noscript>Sorry, your browser does not support JavaScript!</noscript>
+	<video autoplay muted loop id ="videobg">
+		<source src="video.mp4" type="video/mp4">
+	</video>
+	</head>
+	
+	<body>
+	<header>
+		<nav class="menu"> <!--nav elementet länkas till css och används för navigering. Classen är menu och .menu i css anger hur den ska se ut-->
+			<ul> <!--oordnad lista-->
+				<li id="omOss"><a href="omoss.html" class="aa">Om oss</a></li>	<!--delelement i en lista anges med taggen <li> id="zoom" som länkas till css och ger "knapparna" en animation-->				
+				<li id="programmering"><a href="programmering.html" class="aa">Programmering</a></li>
+				<li id="teknikprogrammet"><a href="teknikprogrammet.html" class="aa">Rapport</a></li>
+				<li id="kontakt"><a href="kontakt.html" class="aa">Kontakt</a></li>
+			</ul>
+	    </nav>
+	</header>
+	<div class="profileDiv">
+		<p id="who">Who's watching?</p>
+		<a href="movies.html"><img src="p1.png" class="profiles" alt="Profil 1"></a>
+		<a href="movies.html"><img src="p2.png" class="profiles" alt="Profil 2"></a>
+		<a href="movies.html"><img src="p3.png" class="profiles" alt="Profil 3"></a>
+	</div>
+	<p id="bokstäver1" class= "M" onload="bokstäver()">M</p>
+	<p id="bokstäver2" class= "O" onload="bokstäver()">O</p>
+	<p id="bokstäver1" class= "V" onload="bokstäver()">V</p>
+	<p id="bokstäver2" class= "I" onload="bokstäver()">I</p>
+	<p id="bokstäver1" class= "E" onload="bokstäver()">E</p>
+	<p id="bokstäver2" class= "S" onload="bokstäver()">S</p>
+	<div class="divfooter"><p onscroll="scroll"></p></div>
+	</body>
+	<footer>
+	</footer>
+</html>
