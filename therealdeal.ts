@@ -7,7 +7,7 @@ type movie = {
     cover: string
 }
 
-type movies_recommend = {
+export type movies_recommend = {
     id: number,
     title: string,
     popularity: number,
@@ -75,30 +75,6 @@ export async function get_movie(id: number): Promise<movie> {
         director: directors,
         popularity: popularity,
         cover: cover
-    }
-    return movie
-}
-
-/**
- * Gets the relevant data of a movie. (This function is only used for test cases.)
- * @param {number} id - The id of a movie.
- * @returns {Promise<movies_recommend>} - The relevant data of the movie.
- */
-export async function get_movie_for_test(id: number): Promise<movies_recommend> {
-    const details_response = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=en-US`, options);
-    const details_result = await details_response.json();
-
-    const title = details_result.original_title;
-    const popularity = details_result.popularity;
-    const cover = details_result.poster_path
-    const rating = details_result.vote_average
-
-    const movie = {
-        id: id,
-        title: title,
-        popularity: popularity,
-        cover: cover,
-        rating: rating
     }
     return movie
 }
@@ -190,7 +166,7 @@ async function similar_director(movie_id: number) {
  * @param {Array<movies_recommend>} movies - An array of movies
  * @returns {number} - The id of the movie with the highest popularity * rating
  */
-function find_most_popular(movies: Array<movies_recommend>): number {
+export function find_most_popular(movies: Array<movies_recommend>): number {
     const low = 0
     const high = movies.length - 1
     let highest_rating = low
@@ -223,7 +199,7 @@ export function movie_member(movies: Array<movies_recommend>, movie: movies_reco
  * @param {Array<movies_recommend>} movies - An array of movies
  * @returns {Array<movies_recommend>} - The 5 movies with the highest popularity * rating of the input array
  */
-function most_popular_movies(movies: Array<movies_recommend>): Array<movies_recommend> {
+export function most_popular_movies(movies: Array<movies_recommend>): Array<movies_recommend> {
     const recommended = []
     for(let i = 0; recommended.length < 5; i++) {
         const highest_index = find_most_popular(movies)
@@ -241,7 +217,7 @@ function most_popular_movies(movies: Array<movies_recommend>): Array<movies_reco
  * @param {string} movie - The title of the movie to be removed
  * @returns {Promise<Array<movies_recommend>>} - The same array with the movie removed
  */
-async function remove_input(movies: Array<movies_recommend>, movie: string): Promise<Array<movies_recommend>> {
+export async function remove_input(movies: Array<movies_recommend>, movie: string): Promise<Array<movies_recommend>> {
     const id = await get_id(movie)
     return movies.filter((x: movies_recommend) => x.id != id)
 }
