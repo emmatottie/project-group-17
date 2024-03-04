@@ -19,7 +19,7 @@ const options = {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlZjI4ODQ4NjRhNjc1Mjk5NWVlMmUxNWViZjM0MTgyNCIsInN1YiI6IjY1Y2UwY2NlZWZjZWE5MDE3Y2FhYzJkMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zKr06f_GR1RioPGjmxIi6IRd8sRgq3s8D2jMeUNzYtU'
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5OTVjMTliNGY4ZmFhMGU3MDY3ZjE3NWFiNTI1MjM4NCIsInN1YiI6IjY1Y2UwY2NlZWZjZWE5MDE3Y2FhYzJkMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Iv__wsQh0VdRmZ1144MIMwExeY6eKDEJSG3Ne4VSYWI'
     }
 };
 
@@ -83,7 +83,7 @@ export async function get_movie(id: number): Promise<movie> {
  * Pushes movies similar to the input movie into an array based on genres and keywords.
  * @param {number} movie_id - The id of a movie.
  */
-export async function similar_genre(movie_id: number) {
+export async function similar_genre(movie_id: number): Promise<void> {
     const similar_response = await fetch(`https://api.themoviedb.org/3/movie/${movie_id}/similar?language=en-US&page=1`, options)
     const similar_result = await similar_response.json();
     for(let i = 0; i < similar_result.results.length; i++) {
@@ -107,7 +107,7 @@ export async function similar_genre(movie_id: number) {
  * Pushes movies with the same actors as the input movie into an array.
  * @param {number} movie_id - The id of a movie.
  */
-async function similar_actor(movie_id: number) {
+async function similar_actor(movie_id: number): Promise<void> {
     const actors = (await get_movie(movie_id)).actors
     for(let i = 0; i < actors.length; i++) {
         const actor_id = actors[i]
@@ -135,7 +135,7 @@ async function similar_actor(movie_id: number) {
  * Pushes movies with the same director as the input movie into an array.
  * @param {number} movie_id - The id of a movie.
  */
-async function similar_director(movie_id: number) {
+async function similar_director(movie_id: number): Promise<void> {
     const director = (await get_movie(movie_id)).director
     for(let i = 0; i < director.length; i++) {
         const director_id = director[i]

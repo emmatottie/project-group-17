@@ -1,4 +1,5 @@
-var options = {
+"use strict";
+const options = {
     method: 'GET',
     headers: {
         accept: 'application/json',
@@ -6,6 +7,6 @@ var options = {
     }
 };
 fetch('https://api.themoviedb.org/3/movie/120?language=en-US', options)
-    .then(function (response) { return response.json(); })
-    .then(function (response) { return console.log(response); })
-    .catch(function (err) { return console.error(err); });
+    .then(response => response.json())
+    .then(response => console.log(response))
+    .catch(err => console.error(err));

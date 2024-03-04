@@ -2,7 +2,7 @@
     <head lang="en">
         <link rel = "stylesheet" href = "css_movies.css">
         <meta charset="UTF-8">
-        <script type="text/JavaScript" src="therealdeal.js"></script>
+        <script src="therealdeal.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Movie Recommender</title>
     </head>
@@ -19,6 +19,10 @@
         <p id="output"></p>
 
         <script>
+            // Import the function from the module
+            //import { main } from '../therealdeal';
+        
+            // Use the imported function
             function callMain(){
                 var userInput = document.getElementById('Input').value;
                 const result = main(userInput)
@@ -28,8 +32,6 @@
                 document.getElementById('output').innerHTML = "Recomended movies: " + result;
 
             }
-
-           
         </script>
         
         Skriv ditt namn: <input type="text", id="fun", name="fun">
