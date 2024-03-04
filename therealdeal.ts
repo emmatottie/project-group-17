@@ -243,13 +243,3 @@ export async function main(movie: string): Promise<Array<movies_recommend> | str
       return `Could not find ${movie}`
     }
 }
-
-/**
- TO DO:
- * to function specifications on every function
- * running time
- * webiste
- * polish the code
- * decide how many movies you want to get as output
- * comment the code
-*/
