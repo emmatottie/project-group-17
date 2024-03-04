@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "@types/prompt-sync": "^4.2.3",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "eslint": "^8.56.0",
+    "ts-jest": "^29.1.2"
+  },
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  }
+}
