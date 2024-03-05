@@ -2,7 +2,7 @@
     <head lang="en">
         <link rel = "stylesheet" href = "css_movies.css">
         <meta charset="UTF-8">
-        <script src="therealdeal.js"></script>
+        <script type="text/JavaScript" src="therealdeal.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Movie Recommender</title>
     </head>
@@ -11,39 +11,9 @@
             <div>
                 <p>Enter a movie:</p>
                 <input type="text" id="Input" name="Input" placeholder="Type here...">
-                <button onclick="callMain()">Submit</button>
-                <!--<a href="recomendations.html"><button>Show movies</button></a>-->
+                <a href="recomendations.html"><button>Show movies</button></a>
             </div>
         </div>
-     
-        <p id="output"></p>
-
-        <script>
-            // Import the function from the module
-            //import { main } from '../therealdeal.ts';
-        
-            // Use the imported function
-            function callMain(){
-                var userInput = document.getElementById('Input').value;
-                const result = main(userInput)
-                .then(function (result) { return (result); })
-                .catch(function (err) { return (err); });
-                
-                document.getElementById('output').innerHTML = "Recomended movies: " + result;
-
-            }
-        </script>
-        
-        Skriv ditt namn: <input type="text", id="fun", name="fun">
-        <button onclick="fun()">Klicka!</button>
-     
-        <script>
-            function fun(){
-                const namn = document.getElementById('fun').value
-                document.getElementById('output').innerHTML = "Hej " + namn
-  }
-        </script>
-
     </body>
 
     <footer>
