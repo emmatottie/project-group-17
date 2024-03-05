@@ -2,9 +2,7 @@ export type movie = {
     id: number,
     title: string,
     actors: Array<number>,
-    director: Array<number>,
-    popularity: number,
-    cover: string
+    director: Array<number>
 }
 
 export type movie_for_sorting = {
@@ -61,8 +59,6 @@ export async function get_movie(id: number): Promise<movie> {
     const credits_result = await credits_response.json();
 
     const title = details_result.original_title;
-    const popularity = details_result.popularity;
-    const cover = details_result.poster_path
 
     const actors = []
     for(let i = 0; i < 5 && i < credits_result.cast.length; i++) {
@@ -80,9 +76,7 @@ export async function get_movie(id: number): Promise<movie> {
         id: id,
         title: title,
         actors: actors,
-        director: directors,
-        popularity: popularity,
-        cover: cover
+        director: directors
     }
     return movie
 }

@@ -272,7 +272,7 @@ function find_best_movie(movies) {
     var high = movies.length - 1;
     var highest_rating = low;
     for (var i = low + 1; i <= high; i++) {
-        if ((movies[i].popularity * (movies[i].rating * movies[i].rating)) > (movies[highest_rating].popularity * (movies[highest_rating].rating * movies[highest_rating].rating))) {
+        if ((movies[i].popularity * movies[i].rating) > (movies[highest_rating].popularity * movies[highest_rating].rating)) {
             highest_rating = i;
         }
     }
