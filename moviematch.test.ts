@@ -17,7 +17,6 @@ test('tests the find_best_movie function', () => {
         id: 1,
         title: "example1",
         popularity: 1,
-        cover: "image",
         rating: 4,
         overview: "...",
         release_year: "XXXX"
@@ -26,7 +25,6 @@ test('tests the find_best_movie function', () => {
         id: 2,
         title: "example2",
         popularity: 10,
-        cover: "image",
         rating: 10,
         overview: "...",
         release_year: "XXXX"
@@ -35,7 +33,6 @@ test('tests the find_best_movie function', () => {
         id: 3,
         title: "example3",
         popularity: 0,
-        cover: "image",
         rating: 0,
         overview: "...",
         release_year: "XXXX"
@@ -78,7 +75,6 @@ test('tests the best_movies function', () => {
         id: 1,
         title: "example1",
         popularity: 1,
-        cover: "image",
         rating: 1,
         overview: "...",
         release_year: "XXXX"
@@ -87,7 +83,6 @@ test('tests the best_movies function', () => {
         id: 2,
         title: "example2",
         popularity: 2,
-        cover: "image",
         rating: 2,
         overview: "...",
         release_year: "XXXX"
@@ -96,7 +91,6 @@ test('tests the best_movies function', () => {
         id: 3,
         title: "example3",
         popularity: 3,
-        cover: "image",
         rating: 3,
         overview: "...",
         release_year: "XXXX"
@@ -105,7 +99,6 @@ test('tests the best_movies function', () => {
         id: 4,
         title: "example4",
         popularity: 4,
-        cover: "image",
         rating: 4,
         overview: "...",
         release_year: "XXXX"
@@ -114,7 +107,6 @@ test('tests the best_movies function', () => {
         id: 5,
         title: "example5",
         popularity: 5,
-        cover: "image",
         rating: 5,
         overview: "...",
         release_year: "XXXX"
@@ -123,7 +115,6 @@ test('tests the best_movies function', () => {
         id: 6,
         title: "example6",
         popularity: 6,
-        cover: "image",
         rating: 6,
         overview: "...",
         release_year: "XXXX"
@@ -132,7 +123,6 @@ test('tests the best_movies function', () => {
         id: 7,
         title: "example7",
         popularity: 7,
-        cover: "image",
         rating: 7,
         overview: "...",
         release_year: "XXXX"
@@ -141,7 +131,6 @@ test('tests the best_movies function', () => {
         id: 8,
         title: "example8",
         popularity: 8,
-        cover: "image",
         rating: 8,
         overview: "...",
         release_year: "XXXX"
@@ -172,7 +161,6 @@ test('tests the remove_input function', async () => {
         id: 122,
         title: "example1",
         popularity: 1,
-        cover: "image",
         rating: 1,
         overview: "...",
         release_year: "XXXX"
@@ -181,7 +169,6 @@ test('tests the remove_input function', async () => {
         id: 2,
         title: "example2",
         popularity: 2,
-        cover: "image",
         rating: 2,
         overview: "...",
         release_year: "XXXX"
@@ -190,7 +177,6 @@ test('tests the remove_input function', async () => {
         id: 3,
         title: "example3",
         popularity: 3,
-        cover: "image",
         rating: 3,
         overview: "...",
         release_year: "XXXX"
