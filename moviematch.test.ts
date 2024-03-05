@@ -8,11 +8,8 @@ test('tests the get_id function', async () => {
 test('tests the get_movie function', async () => {
     const example_movie = await get_movie(120)
     expect(example_movie.id).not.toBeUndefined
-    expect(example_movie.title).not.toBeUndefined
     expect(example_movie.actors).not.toBeUndefined
     expect(example_movie.director).not.toBeUndefined
-    expect(example_movie.popularity).not.toBeUndefined
-    expect(example_movie.cover).not.toBeUndefined
 })
 
 test('tests the find_best_movie function', () => {

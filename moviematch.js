@@ -51,6 +51,7 @@ var options = {
  * get_id("Lord of the rings");
  * @param {string} title - the title of a movie.
  * @returns {Promise<number>} - The id of the input movie.
+ *  @precondition The title must be a non-empty string.
  */
 function get_id(title) {
     return __awaiter(this, void 0, void 0, function () {
@@ -73,27 +74,19 @@ exports.get_id = get_id;
  * Gets the relevant data of a movie.
  * @param {number} id - The id of a movie.
  * @returns {Promise<movie>} - The relevant data of the movie.
+ * @precondition The id must be a positive integer.
  */
 function get_movie(id) {
     return __awaiter(this, void 0, void 0, function () {
-        var details_response, credits_response, details_result, credits_result, title, popularity, cover, actors, i, directors, i, movie;
+        var credits_response, credits_result, actors, i, directors, i, movie;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, fetch("https://api.themoviedb.org/3/movie/".concat(id, "?language=en-US"), options)];
+                case 0: return [4 /*yield*/, fetch("https://api.themoviedb.org/3/movie/".concat(id, "/credits?language=en-US"), options)];
                 case 1:
-                    details_response = _a.sent();
-                    return [4 /*yield*/, fetch("https://api.themoviedb.org/3/movie/".concat(id, "/credits?language=en-US"), options)];
-                case 2:
                     credits_response = _a.sent();
-                    return [4 /*yield*/, details_response.json()];
-                case 3:
-                    details_result = _a.sent();
                     return [4 /*yield*/, credits_response.json()];
-                case 4:
+                case 2:
                     credits_result = _a.sent();
-                    title = details_result.original_title;
-                    popularity = details_result.popularity;
-                    cover = details_result.poster_path;
                     actors = [];
                     for (i = 0; i < 5 && i < credits_result.cast.length; i++) {
                         actors.push(credits_result.cast[i].id);
@@ -106,11 +99,8 @@ function get_movie(id) {
                     }
                     movie = {
                         id: id,
-                        title: title,
                         actors: actors,
-                        director: directors,
-                        popularity: popularity,
-                        cover: cover
+                        director: directors
                     };
                     return [2 /*return*/, movie];
             }
@@ -121,6 +111,7 @@ exports.get_movie = get_movie;
 /**
  * Pushes movies similar to the input movie into an array based on genres and keywords.
  * @param {number} movie_id - The id of a movie.
+ * @precondition The movie_id must be a positive integer.
  */
 function similar_genre(movie_id) {
     return __awaiter(this, void 0, void 0, function () {
@@ -161,6 +152,7 @@ exports.similar_genre = similar_genre;
 /**
  * Pushes movies with the same actors as the input movie into an array.
  * @param {number} movie_id - The id of a movie.
+ * @precondition The movie_id must be a positive integer.
  */
 function similar_actor(movie_id) {
     return __awaiter(this, void 0, void 0, function () {
@@ -212,6 +204,7 @@ function similar_actor(movie_id) {
 /**
  * Pushes movies with the same director as the input movie into an array.
  * @param {number} movie_id - The id of a movie.
+ * @precondition The movie_id must be a positive integer.
  */
 function similar_director(movie_id) {
     return __awaiter(this, void 0, void 0, function () {
@@ -266,6 +259,7 @@ function similar_director(movie_id) {
  * Finds the movie with the highest popularity * rating of an array of movies
  * @param {Array<movie_for_sorting>} movies - An array of movies
  * @returns {number} - The id of the movie with the highest popularity * rating
+ * @precondition The movies array must not be empty.
  */
 function find_best_movie(movies) {
     var low = 0;
@@ -285,6 +279,7 @@ exports.find_best_movie = find_best_movie;
  * @param {movie_for_sorting} movie - The movie to check if it is in the array.
  * @returns {boolean} - true if the array contains the movie,
  *                      false if the array does not contain the movie.
+ * @precondition The movies array must not be empty.
  */
 function movie_member(movies, movie) {
     for (var i = 0; i < movies.length; i++) {
@@ -299,6 +294,7 @@ exports.movie_member = movie_member;
  * Creates an array of the 5 movies with the highest popularity * rating
  * @param {Array<movie_for_sorting>} movies - An array of movies
  * @returns {Array<movie_for_sorting>} - The 5 movies with the highest popularity * rating of the input array
+ * @precondition The movies array must not be empty.
  */
 function best_movies(movies) {
     var recommended = [];
@@ -323,6 +319,7 @@ exports.best_movies = best_movies;
  * @param {Array<movie_for_sorting>} movies - An array of movies
  * @param {string} movie - The title of the movie to be removed
  * @returns {Promise<Array<movie_for_sorting>>} - The same array with the movie removed
+ * @precondition The movies array must not be empty.
  */
 function remove_input(movies, movie) {
     return __awaiter(this, void 0, void 0, function () {
@@ -345,6 +342,7 @@ var similar_array = [];
  * @returns {Promise<Array<movie_for_sorting>> | string}
  *          - An array of recomended movies if the input movie is found,
  *            an error message saying it could not find the movie if it is not found.
+ * @precondition The movie title must be a non-empty string.
  */
 function main(movie) {
     return __awaiter(this, void 0, void 0, function () {
