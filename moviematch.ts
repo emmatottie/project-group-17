@@ -1,6 +1,5 @@
 export type movie = {
     id: number,
-    title: string,
     actors: Array<number>,
     director: Array<number>
 }
@@ -36,6 +35,7 @@ const options = {
  * get_id("Lord of the rings");
  * @param {string} title - the title of a movie.
  * @returns {Promise<number>} - The id of the input movie.
+ *  @precondition The title must be a non-empty string.
  */
 export async function get_id(title: string): Promise<number> {
     const response = await fetch(
@@ -51,14 +51,11 @@ export async function get_id(title: string): Promise<number> {
  * Gets the relevant data of a movie.
  * @param {number} id - The id of a movie.
  * @returns {Promise<movie>} - The relevant data of the movie.
+ * @precondition The id must be a positive integer.
  */
 export async function get_movie(id: number): Promise<movie> {
-    const details_response = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=en-US`, options);
     const credits_response = await fetch(`https://api.themoviedb.org/3/movie/${id}/credits?language=en-US`, options);
-    const details_result = await details_response.json();
     const credits_result = await credits_response.json();
-
-    const title = details_result.original_title;
 
     const actors = []
     for(let i = 0; i < 5 && i < credits_result.cast.length; i++) {
@@ -74,7 +71,6 @@ export async function get_movie(id: number): Promise<movie> {
 
     const movie = {
         id: id,
-        title: title,
         actors: actors,
         director: directors
     }
@@ -84,6 +80,7 @@ export async function get_movie(id: number): Promise<movie> {
 /**
  * Pushes movies similar to the input movie into an array based on genres and keywords.
  * @param {number} movie_id - The id of a movie.
+ * @precondition The movie_id must be a positive integer.
  */
 export async function similar_genre(movie_id: number): Promise<void> {
     const similar_response = await fetch(`https://api.themoviedb.org/3/movie/${movie_id}/similar?language=en-US&page=1`, options)
@@ -112,6 +109,7 @@ export async function similar_genre(movie_id: number): Promise<void> {
 /**
  * Pushes movies with the same actors as the input movie into an array.
  * @param {number} movie_id - The id of a movie.
+ * @precondition The movie_id must be a positive integer.
  */
 async function similar_actor(movie_id: number): Promise<void> {
     const actors = (await get_movie(movie_id)).actors
@@ -144,6 +142,7 @@ async function similar_actor(movie_id: number): Promise<void> {
 /**
  * Pushes movies with the same director as the input movie into an array.
  * @param {number} movie_id - The id of a movie.
+ * @precondition The movie_id must be a positive integer.
  */
 async function similar_director(movie_id: number): Promise<void> {
     const director = (await get_movie(movie_id)).director
@@ -179,6 +178,7 @@ async function similar_director(movie_id: number): Promise<void> {
  * Finds the movie with the highest popularity * rating of an array of movies
  * @param {Array<movie_for_sorting>} movies - An array of movies
  * @returns {number} - The id of the movie with the highest popularity * rating
+ * @precondition The movies array must not be empty.
  */
 export function find_best_movie(movies: Array<movie_for_sorting>): number {
     const low = 0
@@ -198,6 +198,7 @@ export function find_best_movie(movies: Array<movie_for_sorting>): number {
  * @param {movie_for_sorting} movie - The movie to check if it is in the array.
  * @returns {boolean} - true if the array contains the movie,
  *                      false if the array does not contain the movie.
+ * @precondition The movies array must not be empty.
  */
 export function movie_member(movies: Array<recommended_movie>, movie: movie_for_sorting | recommended_movie): boolean {
     for(let i = 0; i < movies.length; i++) {
@@ -212,6 +213,7 @@ export function movie_member(movies: Array<recommended_movie>, movie: movie_for_
  * Creates an array of the 5 movies with the highest popularity * rating
  * @param {Array<movie_for_sorting>} movies - An array of movies
  * @returns {Array<movie_for_sorting>} - The 5 movies with the highest popularity * rating of the input array
+ * @precondition The movies array must not be empty.
  */
 export function best_movies(movies: Array<movie_for_sorting>): Array<recommended_movie> {
     const recommended:Array<recommended_movie> = []
@@ -236,6 +238,7 @@ export function best_movies(movies: Array<movie_for_sorting>): Array<recommended
  * @param {Array<movie_for_sorting>} movies - An array of movies
  * @param {string} movie - The title of the movie to be removed
  * @returns {Promise<Array<movie_for_sorting>>} - The same array with the movie removed
+ * @precondition The movies array must not be empty.
  */
 export async function remove_input(movies: Array<movie_for_sorting>, movie: string): Promise<Array<movie_for_sorting>> {
     const id = await get_id(movie)
@@ -250,9 +253,10 @@ let similar_array: Array<movie_for_sorting> = []
  * @returns {Promise<Array<movie_for_sorting>> | string}
  *          - An array of recomended movies if the input movie is found,
  *            an error message saying it could not find the movie if it is not found.
+ * @precondition The movie title must be a non-empty string.
  */
 export async function main(movie: string): Promise<Array<recommended_movie> | string> {
-    try {
+   try {
       const id = await get_id(movie); //gets the id of the input movie
       await similar_director(id);
       await similar_actor(id);
